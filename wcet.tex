@@ -1,0 +1,188 @@
+% $Header: /cvsroot/latex-beamer/latex-beamer/solutions/generic-talks/generic-ornate-15min-45min.en.tex,v 1.5 2007/01/28 20:48:23 tantau Exp $
+
+\documentclass{beamer}
+
+% This file is a solution template for:
+
+% - Giving a talk on some subject.
+% - The talk is between 15min and 45min long.
+% - Style is ornate.
+
+
+
+% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+%
+% In principle, this file can be redistributed and/or modified under
+% the terms of the GNU Public License, version 2.
+%
+% However, this file is supposed to be a template to be modified
+% for your own needs. For this reason, if you use this file as a
+% template and not specifically distribute it as part of a another
+% package/program, I grant the extra permission to freely copy and
+% modify this file as you see fit and even to delete this copyright
+% notice. 
+
+
+\mode<presentation>
+{
+  \usetheme{Darmstadt}
+}
+
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+
+
+\title{Worst-Case Execution Time Analysis}
+
+\author{Ryan Fox}
+
+\institute
+{
+  Department of Electrical and Computer Engineering\\
+  University of Waterloo
+}
+
+\date{\today}
+
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>{Outline}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents[pausesections]
+\end{frame}
+
+\section{Introduction}
+\subsection{Definitions}
+
+\begin{frame}{WCET}
+  \begin{itemize}
+    \item $WCET_A$ -- Actual Worst Case Execution Time
+    \item $WCET_D$ -- Derived Worst Case Execution Time
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Safety}
+  Is $WCET_D \geq WCET_A$ ?
+  \begin{itemize}
+    \item Bound
+      \begin{itemize}
+        \item $WCET_A \in (0, WCET_D]$
+        \item Safe
+      \end{itemize}      
+      \pause
+    \item Estimate
+      \begin{itemize}
+        \item Maximum value of all sampled WCETs
+        \item Does not consider all possible cases
+        \item Not safe          
+      \end{itemize}      
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Precision}
+  \begin{itemize}
+    \item Are the bounds or estimates close to the actual values? \\
+      \pause
+    \item Less Precision
+      \begin{itemize}
+      \item[$\Rightarrow$] More idle time
+        \pause
+      \item[$\Rightarrow$] Harder to schedule
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Assumptions}
+
+\begin{frame}{Assumptions}
+  \pause
+  \begin{itemize}
+    \item Hard Real-Time System \pause
+    \item Loops and recursion are explicitly bounded \pause
+    \item No dynamic jumps
+      \begin{itemize}
+        \item Function pointers
+        \item \texttt{switch} statements
+      \end{itemize}
+      \pause
+    \item No interruptions
+  \end{itemize}
+\end{frame}
+
+\section{Approaches to WCET Analysis}
+
+\subsection{Static Analysis}
+\begin{frame}{Stages of Analysis}
+  \begin{enumerate}
+    \item Frontend
+    \item Control-Flow Analysis
+    \item Processor Behaviour Analysis
+    \item Bound Calculation
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Frontend}
+  \begin{itemize}
+    \item Input:
+      \begin{itemize}
+        \item Source Code; or
+        \item Machine Code; and maybe
+        \item User annotations
+      \end{itemize}
+    \item Output:
+      \begin{itemize}
+        \item Call Graph
+        \item Control-Flow Graph
+        \item Other Information
+          \begin{itemize}
+            \item Ranges for input data
+            \item Iteration/Recursion bounds
+          \end{itemize}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Control-Flow Analysis}
+  \begin{itemize}
+    \item Finds all possible paths of execution
+    \item Attempts to eliminate infeasible paths to improve precission
+      \begin{itemize}
+        \item ie: \texttt{if (a \&\& !a)}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Processor Behaviour Analysis}
+  \begin{itemize}
+    \item
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Bound Calculation}
+  \begin{itemize}
+    \item
+  \end{itemize}
+\end{frame}
+
+\subsection{Measurement}
+\begin{frame}{Measurement}
+  \begin{itemize}
+    \item Results gathered experimentally by executing the task
+    \item Infeasible to measure all possible cases of execution
+    \item Provides an estimate of the WCET
+    \item Generally not safe for hard real-time purposes
+  \end{itemize}
+\end{frame}
+
+\end{document}
