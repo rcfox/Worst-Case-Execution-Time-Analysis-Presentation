@@ -1,31 +1,9 @@
 \documentclass{beamer}
 
-% This file is a solution template for:
-
-% - Giving a talk on some subject.
-% - The talk is between 15min and 45min long.
-% - Style is ornate.
-
-
-
-% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
-%
-% In principle, this file can be redistributed and/or modified under
-% the terms of the GNU Public License, version 2.
-%
-% However, this file is supposed to be a template to be modified
-% for your own needs. For this reason, if you use this file as a
-% template and not specifically distribute it as part of a another
-% package/program, I grant the extra permission to freely copy and
-% modify this file as you see fit and even to delete this copyright
-% notice. 
-
-
 \mode<presentation>
 {
   \usetheme{Darmstadt}
 }
-
 
 \usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
@@ -72,13 +50,13 @@
 \begin{frame}{Safety}
   Is $WCET_D \geq WCET_A$ ?
   \begin{itemize}
-    \item Bound
+    \item WCET Bound
       \begin{itemize}
         \item $WCET_A \in (0, WCET_D]$
         \item Safe
       \end{itemize}      
       \pause
-    \item Estimate
+    \item WCET Estimate
       \begin{itemize}
         \item Maximum value of all sampled WCETs
         \item Does not consider all possible cases
@@ -94,7 +72,6 @@
     \item Less Precision
       \begin{itemize}
       \item[$\Rightarrow$] More idle time
-        \pause
       \item[$\Rightarrow$] Harder to schedule
       \end{itemize}
   \end{itemize}
@@ -107,20 +84,19 @@
   \begin{itemize}
     \item Hard Real-Time System
     \item Execution does not continue indefinitely
-    \item Loops and recursion are explicitly bounded \pause
+    \item Loops and recursion are explicitly bounded
     \item No dynamic jumps
       \begin{itemize}
         \item Function pointers
         \item \texttt{switch} statements
       \end{itemize}
-      \pause
     \item No interruptions
   \end{itemize}
 \end{frame}
 
 \section{Static Analysis}
-\subsection{Frontend}
-\begin{frame}{Frontend}
+\subsection{Front-end}
+\begin{frame}{Front-end}
   \begin{columns}
     \begin{column}{0.6\textwidth}
       \begin{itemize}
@@ -159,7 +135,7 @@
     \begin{column}{0.63\textwidth}
       \begin{itemize}
         \item Finds all possible paths of execution
-        \item Attempts to eliminate infeasible paths to improve precission
+        \item Attempts to eliminate infeasible paths to improve precision
           \begin{itemize}
             \item \texttt{if (a > 20 \&\& a == (b \% 10))}
           \end{itemize}
@@ -167,7 +143,7 @@
         \item<2-> Challenges:
           \begin{itemize}
             \item Dynamic jumps
-            \item Pipelining
+            \item Pipe-lining
             \item Out-of-order execution
           \end{itemize}
       \end{itemize}
@@ -181,8 +157,13 @@
 \subsection{Processor Behaviour Analysis}
 \begin{frame}{Processor Behaviour Analysis}
   \begin{itemize}
-    \item Determines processor behaviour for each task
-    \item Context is Important
+    \item Uses a \underline{model} of the processor
+    \item Determines the timing for each task
+      \begin{itemize}
+        \item Instruction
+        \item Sequence of instructions
+      \end{itemize}
+    \item \alert{Context is important}
       \begin{itemize}
         \item Memory, Cache
         \item Pipelines, Branch Prediction
@@ -219,7 +200,10 @@
         \item Nodes represent basic elements of the task
         \item Edges represent possible execution paths
         \item Values beside nodes indicate individual WCETs
-        \item For the following examples: 100 loop iterations
+        \item For the following examples:
+          \begin{itemize}
+            \item 100 loop iterations
+          \end{itemize}
       \end{itemize}
     \end{column}
   \end{columns}
@@ -235,7 +219,7 @@
         \item Etc.
       \end{itemize}
     \item $T_{Parent} = WCET_{max}(T_{Child0}, T_{Child1},\dots)$
-    \item Simple and computational cheap
+    \item Simple and computationally cheap
     \item Inter-node dependencies or optimized code may cause problems
   \end{itemize}
 \end{frame}
@@ -279,7 +263,7 @@
 
 \begin{frame}[IPET]{Implicit Path Enumeration Technique}
   \begin{itemize}
-    \item Each node is assigned a time value, $t$, and a counter variable, $x$
+    \item Each node has a time value, $t$, and a counter variable, $x$
     \item Program structure is represented as constraining linear equations
     \item $WCET_D$ can be found using either:
       \begin{itemize}
@@ -321,14 +305,88 @@
 \end{frame}
 
 \section{Measurement}
-\subsection{}
-\begin{frame}{Measurement}
+\subsection{Measurement-Based Analysis}
+\begin{frame}{General}
   \begin{itemize}
     \item Results gathered experimentally by executing the task
-    \item Infeasible to measure all possible cases of execution
-    \item Provides an estimate of the WCET
-    \item Generally not safe for hard real-time purposes
+    \item Generally not feasible to measure all possible cases of execution
+    \item Provides an \underline{estimate} of the WCET
+    \item Not safe for hard real-time purposes
+      \pause
+    \item Compatible with the static analysis framework
+      \begin{itemize}
+        \item Measurements may substitute for the Processor Behaviour Analysis
+        \item May also overlap with Bound Calculations
+      \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Why Bother?}
+  \begin{itemize}
+    \item Safety might not be a concern
+    \item Static analysis can be slow
+    \item Average-case execution time emerges as a side-effect
+  \end{itemize}
+\end{frame}
+
+\subsection{Methods}
+\begin{frame}{Measurement on Hardware}
+  \begin{itemize}
+    \item Intrusive
+      \begin{itemize}
+        \item Collect timestamps during execution
+        \item CPU cycle counter
+      \end{itemize}
+    \item Non-Intrusive
+      \begin{itemize}
+        \item Logic Analyzer
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+  
+\begin{frame}{Measurement on Simulator}
+  \begin{itemize}
+    \item Execute the task on a virtual processor
+    \item Advantages:
+      \begin{itemize}
+        \item Physical hardware not necessary
+        \item Many simulations can be run in parallel
+        \item Intrusive measurements not necessary
+      \end{itemize}
+    \item Disadvantages:
+      \begin{itemize}
+        \item May not be 100\% accurate to processor behaviour
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Summary}
+\subsection{Static vs. Measurement-Based Analysis}
+
+\begin{frame}{Static vs. Measurement-Based Analysis}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      Static Analysis
+      \begin{itemize}
+        \item[$\checkmark$] Calculates bounds for WCET
+        \item[$\checkmark$] Safe
+        \item[$\checkmark$] No special hardware needed
+        \item[$X$] Processor-specific
+        \item[$X$] Usually over-estimates WCET
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \pause
+      Measurements
+      \begin{itemize}
+        \item[$\checkmark$] Simple to apply to a variety of hardware
+        \item[$X$] Calculates estimates of the WCET
+        \item[$X$] Generally unsafe
+        \item[]
+        \item[]
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}
