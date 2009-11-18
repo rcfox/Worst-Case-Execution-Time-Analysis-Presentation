@@ -30,7 +30,6 @@
 \usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
 
-
 \title{Worst-Case Execution Time Analysis}
 
 \author{Ryan Fox}
@@ -278,8 +277,47 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{IPET Bound Calculation}
-  
+\begin{frame}[IPET]{Implicit Path Enumeration Technique}
+  \begin{itemize}
+    \item Each node is assigned a time value, $t$, and a counter variable, $x$
+    \item Program structure is represented as constraining linear equations
+    \item $WCET_D$ can be found using either:
+      \begin{itemize}
+      \item Integer Linear Programming
+        \begin{itemize}
+          \item More popular method
+          \item Efficient solvers exist
+        \end{itemize}
+      \item Constrain Satisfaction
+        \begin{itemize}
+          \item Allows for constraints that are more complex
+          \item Generally slower than integer linear programming
+        \end{itemize}
+      \item In either case, the problem is NP-hard
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{IPET Example}
+  \begin{columns}
+    \begin{column}{0.25\textwidth}
+      \includegraphics[scale=0.3]{ipetoutput.png}
+    \end{column}
+    \begin{column}{0.75\textwidth}
+      \begin{eqnarray*}
+        x_{start} &=& 1 \\
+        x_{end} &=& 1 \\
+        x_A &\leq& 100 \\
+        x_A &=& x_{start,A} + x_{H,A} = x_{A,end} + x_{A,B} \\
+        x_B &=& x_{A,B} = x_{B,C} + x_{B,D} \\
+        x_C &=& x_{B,C} = x_{C,E} \\
+        &\dots& \\
+        x_H &=& x_{F,H} + x_{G,H} = x_{H,A} \\
+        x_{end} &=& x_{A,end} \\
+        WCET_D &=& maximize(\sum x_it_i)
+      \end{eqnarray*}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \section{Measurement}
