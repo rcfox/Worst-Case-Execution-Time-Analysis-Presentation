@@ -182,7 +182,7 @@
 \subsection{Processor Behaviour Analysis}
 \begin{frame}{Processor Behaviour Analysis}
   \begin{itemize}
-    \item Determines processor behaviour for the task
+    \item Determines processor behaviour for each task
     \item Context is Important
       \begin{itemize}
         \item Memory, Cache
@@ -197,10 +197,89 @@
 \end{frame}
 
 \subsection{Bound Calculation}
-\begin{frame}{Bound Calculation}
+\begin{frame}{Bound Calculation}  
   \begin{itemize}
-    \item 
+    \item Combines individual tasks' timings to get overall $WCET_D$
+      \pause
+    \item Three main approaches:
+      \begin{itemize}
+        \item Path-Based Calculation
+        \item Structure-Based Calculation
+        \item Implicit Path Enumeration Technique (IPET)
+      \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Example Input}
+  \begin{columns}
+    \begin{column}{0.25\textwidth}
+      \includegraphics[scale=0.3]{input.png}
+    \end{column}
+    \begin{column}{0.75\textwidth}
+      \begin{itemize}
+        \item Nodes represent basic elements of the task
+        \item Edges represent possible execution paths
+        \item Values beside nodes indicate individual WCETs
+        \item For the following examples: 100 loop iterations
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Structure-Based Bound Calculation}
+  \begin{itemize}
+    \item Bottom-up traversal of the syntax tree
+    \item A set of rules is given for combining child nodes with parents
+      \begin{itemize}
+        \item Combine all possibilities of a conditional
+        \item Combine sequential nodes
+        \item Etc.
+      \end{itemize}
+    \item $T_{Parent} = WCET_{max}(T_{Child0}, T_{Child1},\dots)$
+    \item Simple and computational cheap
+    \item Inter-node dependencies or optimized code may cause problems
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Structure-Based Bound Calculation Example}
+  \begin{columns}
+    \begin{column}{0.25\textwidth}
+      \includegraphics[scale=0.3]{structureoutput1.png}
+    \end{column}
+    \begin{column}{0.25\textwidth}
+      \includegraphics[scale=0.3]{structureoutput2.png}
+    \end{column}
+    \begin{column}{0.25\textwidth}
+      \includegraphics[scale=0.3]{structureoutput3.png}
+    \end{column}
+    \begin{column}{0.25\textwidth}
+      \includegraphics[scale=0.3]{structureoutput4.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Path-Based Bound Calculation}  
+    \begin{columns}
+    \begin{column}{0.25\textwidth}
+      \includegraphics[scale=0.3]{pathoutput.png}
+    \end{column}
+    \begin{column}{0.75\textwidth}
+      \begin{itemize}
+        \item Each possible path is traversed, and $WCET_{PATHi}$ is calculated
+        \item $WCET_D = max(WCET_{PATH0},WCET_{PATH1},\dots)$
+          \pause
+        \item Longest execution path is explicitly shown.
+          \begin{itemize}
+            \item Best target for optimizations
+          \end{itemize}
+        \item Analysis time rises exponentially with the number of branches
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{IPET Bound Calculation}
+  
 \end{frame}
 
 \section{Measurement}

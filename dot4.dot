@@ -1,0 +1,9 @@
+digraph G {
+{rank=source; Start;}
+{rank=sink; End;}
+
+A [label="A,B,C,D,\nE,F,G,H"];
+
+Start->A;
+A->End;
+}
