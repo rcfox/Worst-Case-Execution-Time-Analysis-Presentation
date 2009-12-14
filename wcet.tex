@@ -95,8 +95,8 @@
 \end{frame}
 
 \section{Static Analysis}
-\subsection{Front-end}
-\begin{frame}{Front-end}
+\subsection{Front-End}
+\begin{frame}{Front-End}
   \begin{columns}
     \begin{column}{0.6\textwidth}
       \begin{itemize}
@@ -137,7 +137,7 @@
         \item Finds all possible paths of execution
         \item Attempts to eliminate infeasible paths to improve precision
           \begin{itemize}
-            \item \texttt{if (a > 20 \&\& a == (b \% 10))}
+            \item \texttt{if (a \&\& !a)}
           \end{itemize}
         \item Determines bounds of iteration and recursion
         \item<2-> Challenges:
@@ -218,7 +218,7 @@
         \item Combine sequential nodes
         \item Etc.
       \end{itemize}
-    \item $T_{Parent} = WCET_{max}(T_{Child0}, T_{Child1},\dots)$
+    \item $T_{Parent} = max(T_{Child0}, T_{Child1},\dots)$
     \item Simple and computationally cheap
     \item Inter-node dependencies or optimized code may cause problems
   \end{itemize}
