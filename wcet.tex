@@ -7,6 +7,7 @@
 
 \usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
+\usepackage{url}
 
 \title{Worst-Case Execution Time Analysis}
 
@@ -202,8 +203,9 @@
         \item Values beside nodes indicate individual WCETs
         \item For the following examples:
           \begin{itemize}
-            \item 100 loop iterations
+            \item Less than 100 loop iterations
           \end{itemize}
+        \item {\footnotesize{Examples adapted from Wilhelm et al. 2007.}}
       \end{itemize}
     \end{column}
   \end{columns}
@@ -218,7 +220,7 @@
         \item Combine sequential nodes
         \item Etc.
       \end{itemize}
-    \item $T_{Parent} = max(T_{Child0}, T_{Child1},\dots)$
+    \item $T_{New} =  T_{Parent} + max(T_{Child0}, T_{Child1},\dots)$
     \item Simple and computationally cheap
     \item Inter-node dependencies or optimized code may cause problems
   \end{itemize}
@@ -291,7 +293,7 @@
       \begin{eqnarray*}
         x_{start} &=& 1 \\
         x_{end} &=& 1 \\
-        x_A &\leq& 100 \\
+        x_A &<& 100 \\
         x_A &=& x_{start,A} + x_{H,A} = x_{A,end} + x_{A,B} \\
         x_B &=& x_{A,B} = x_{B,C} + x_{B,D} \\
         x_C &=& x_{B,C} = x_{C,E} \\
@@ -326,6 +328,7 @@
     \item Safety might not be a concern
     \item Static analysis can be slow
     \item Average-case execution time emerges as a side-effect
+    \item \alert{Exercises your code}
   \end{itemize}
 \end{frame}
 
@@ -387,6 +390,22 @@
       \end{itemize}
     \end{column}
   \end{columns}
+\end{frame}
+
+\subsection{References}
+\begin{frame}{References}
+  \begin{itemize}
+    \item The Worst-Case Execution Time Problem -- Overview of Methods and Survey of Tools
+      \begin{itemize}
+        \item Wilhelm et. al, 2007
+        \item \url{http://moss.csc.ncsu.edu/\~mueller/ftp/pub/mueller/papers/1257.pdf}
+      \end{itemize}
+    \item A Modular Tool Architecture for Worst-Case Execution Time Analysis
+      \begin{itemize}
+        \item Ermedahl, 2003
+        \item \url{http://www.mrtc.mdh.se/publications/0570.pdf}
+      \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \end{document}
